@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update]
+  before_action :set_post, only: %i[show edit update]
 
   def index
     @posts = Post.all
@@ -8,11 +8,11 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
-      #BEFORE using a serializer:
-      render json: @post.to_json(only: [:title, :description, :id],
-                                include: [author: { only: [:name]}])
-       # AFTER USING OUR SERIALIZER
-      # render json: @post, status: 200
+    # BEFORE using a serializer:
+    # render json: @post.to_json(only: [:title, :description, :id],
+    #                           include: [author: { only: [:name]}])
+    # AFTER USING OUR SERIALIZER
+    render json: @post, status: 200
   end
 
   def new
@@ -25,15 +25,15 @@ class PostsController < ApplicationController
     render json: @post, status: 201
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @post.update(post_params)
     render json: @post, status: 202
   end
 
-private
+  private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_post
     @post = Post.find(params[:id])
